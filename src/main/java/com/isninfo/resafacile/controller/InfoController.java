@@ -14,13 +14,14 @@ public class InfoController {
     private String versionSerie;
     @Value("${server.port}")
     private int port;
+
     //Get http://localhost:9090/info
-@GetMapping("/info")
-public Map<String, Object> info(){
-    return Map.of(
-            "application", nom,
-            "serie", versionSerie,
-            "port", port
-    );
-}
+    @GetMapping("/info")
+    public Map<String, Object> info() {
+        return Map.of(
+                "application", nom,
+                "serie", versionSerie,
+                "port", port
+        );
+    }
 }

@@ -12,11 +12,8 @@ public class ResafacileApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ResafacileApplication.class, args);
-        System.out.println("Bonjour depuis Spring Boot");
+       // System.out.println("Bonjour depuis Spring Boot");
     }
 
-    @GetMapping("/")
-    public  String salut(){
-        return "Bonjour depuis Spring Boot avec requête HTTP";
-    }
+
 }

@@ -1,0 +1,15 @@
+meta {
+  name: GET hello toi
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/hello/toi?nom=Raymond
+  body: none
+  auth: none
+}
+
+params:query {
+  nom: Raymond
+}
