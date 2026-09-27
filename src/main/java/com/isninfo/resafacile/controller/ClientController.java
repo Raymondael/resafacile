@@ -43,11 +43,9 @@
 package com.isninfo.resafacile.controller;
 
 import com.isninfo.resafacile.model.Client;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,14 +59,22 @@ public class ClientController {
     private  final AtomicLong compteurId = new AtomicLong(1);
 
     public  ClientController(){
-        clients.add(new Client(compteurId.getAndIncrement(), "Arand Dupont", "arnaud@email.com", "2402543669"));
-        clients.add(new Client(compteurId.getAndIncrement(), "Toto Daokou", "toto@gmail.com", "22822556699"));
+        clients.add(new Client(compteurId.getAndIncrement(),
+                "Arand Dupont",
+                "arnaud@email.com",
+                "2402543669"));
+        clients.add(new Client(compteurId.getAndIncrement(),
+                "Toto Daokou",
+                "toto@gmail.com",
+                "22822556699"));
     }
-
+// Afficher tous les clients
     @GetMapping
     public  List<Client> tousClient(){
         return clients;
     }
+
+// Afficher un client par son id
     @GetMapping("/{id}")
     public ResponseEntity<Client> afficherUnClient(@PathVariable Long id){
         for(Client ct : clients){
@@ -79,4 +85,39 @@ public class ClientController {
         return  ResponseEntity.notFound().build();
     }
 
+  // Création d'un client
+  @PostMapping
+  public  ResponseEntity<Client> creerClient(@RequestBody Client nouveau){
+        nouveau.setId(compteurId.getAndIncrement());
+        clients.add(nouveau);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nouveau);
+  }
+
+  // Update un client
+    @PutMapping("/{id}")
+    public  ResponseEntity<Client> modifierClient(@PathVariable Long id,
+                                                  @RequestBody Client modif){
+        for(Client ct : clients){
+            if(ct.getId().equals(id)){
+                ct.setNom(modif.getNom());
+                ct.setEmail(modif.getEmail());
+                ct.setTelephone(modif.getTelephone());
+                ResponseEntity.ok(ct);
+            }
+        }
+        return  ResponseEntity.notFound().build();
+    }
+
+  // Supprimer un client
+
+  @DeleteMapping("/{id}")
+  public  ResponseEntity<Void> supprimer(
+          @PathVariable Long id ){
+        boolean supprim = clients.removeIf(
+                ct -> ct.getId().equals(id) );
+        if(supprim){
+            return  ResponseEntity.noContent().build();
+        }
+        return  ResponseEntity.notFound().build();
+  }
 }
