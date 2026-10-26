@@ -1,0 +1,21 @@
+meta {
+  name: GET rechercher par nom (methode derivee)
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/clients/recherche?nom=dupont
+  body: none
+  auth: none
+}
+
+params:query {
+  nom: dupont
+}
+
+docs {
+  findByNomContainingIgnoreCase : Spring Data fabrique la requete a partir du NOM de la methode.
+  Majuscules ou minuscules, peu importe : "dupont", "DUPONT" et "Dup" trouvent Arnaud Dupont.
+  Regarde le SQL (avec "like") dans la console d'IntelliJ.
+}

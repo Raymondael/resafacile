@@ -4,6 +4,8 @@ import com.isninfo.resafacile.model.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Épisode 5 : l'accès à la table "clients".
  * <p>
@@ -13,4 +15,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
+
+    // Épisode 6 : méthode dérivée. Spring Data lit le NOM de la méthode et fabrique la requête :
+    // findBy + Nom + Containing (LIKE %...%) + IgnoreCase (majuscules/minuscules sans importance)
+    List<Client> findByNomContainingIgnoreCase(String nom);
 }

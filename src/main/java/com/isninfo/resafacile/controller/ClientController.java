@@ -44,14 +44,11 @@ package com.isninfo.resafacile.controller;
 
 import com.isninfo.resafacile.model.Client;
 import com.isninfo.resafacile.service.ClientService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/api/clients")
@@ -69,6 +66,13 @@ public class ClientController {
         return clientService.trouverTousClient();
     }
 
+    // Épisode 6 : rechercher par nom, GET /api/clients/recherche?nom=dupont
+    // (l'adresse littérale "recherche" passe avant le "/{id}" : Spring choisit la plus précise)
+    @GetMapping("/recherche")
+    public List<Client> rechercher(@RequestParam String nom) {
+        return clientService.rechercherParNom(nom);
+    }
+
     // Afficher un client par son id
     @GetMapping("/{id}")
     public ResponseEntity<Client> afficherUnClient(@PathVariable Long id) {
@@ -82,7 +86,7 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<Client> creer(@RequestBody Client nouveau) {
         Client cree = clientService.creerClient(nouveau);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nouveau);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cree);
     }
 
     // Update un client

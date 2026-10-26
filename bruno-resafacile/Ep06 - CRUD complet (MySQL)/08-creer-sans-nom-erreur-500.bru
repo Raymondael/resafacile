@@ -1,0 +1,28 @@
+meta {
+  name: POST creer SANS nom (erreur 500)
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/clients
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "sansnom@example.com",
+    "telephone": "000"
+  }
+}
+
+docs {
+  Le nom est obligatoire (@Column(nullable = false)). Sans nom, MySQL/Hibernate refuse la ligne.
+  Resultat actuel : une erreur 500, alors que la faute vient de la requete (c'est un 400).
+  On le corrigera a l'episode 8 avec la validation et la gestion des erreurs.
+}

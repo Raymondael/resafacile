@@ -26,6 +26,11 @@ public class ClientService {
         return clientRepository.findById(id);
     }
 
+    // rechercher des clients dont le nom contient un texte (sans tenir compte de la casse)
+    public List<Client> rechercherParNom(String nom) {
+        return clientRepository.findByNomContainingIgnoreCase(nom);
+    }
+
     // creer un client
     public Client creerClient(Client nouveau) {
         // id = null : MySQL génère l'id, et on évite d'écraser un client existant
