@@ -1,0 +1,35 @@
+# Épisode 5 (bonus, optionnel) : MySQL dans Docker au lieu de l'installation locale.
+#
+#   docker compose up -d        démarre MySQL
+#   docker compose down         arrête (les données restent dans le volume)
+#   docker compose down -v      arrête ET efface les données
+#
+# Le port 3307 évite le conflit avec un MySQL déjà installé sur 3306.
+# Pour que l'application utilise ce MySQL, définir la variable d'environnement :
+#   DB_URL=jdbc:mysql://localhost:3307/resafacile
+#
+# Si l'erreur « Public Key Retrieval is not allowed » apparaît, ajouter
+# ?allowPublicKeyRetrieval=true à la fin de DB_URL (développement uniquement).
+#
+# Mots de passe de développement uniquement.
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: resafacile-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_dev
+    ports:
+      - "3307:3306"
+    volumes:
+      - resafacile-data:/var/lib/mysql
+      # Même script que dans Workbench : crée la base et l'utilisateur au 1er démarrage
+      - ./db/01-creation-base.sql:/docker-entrypoint-initdb.d/01-creation-base.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  resafacile-data:

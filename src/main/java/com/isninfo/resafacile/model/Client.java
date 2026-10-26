@@ -1,12 +1,34 @@
 package com.isninfo.resafacile.model;
 
-public class Client {
-    private  Long id;
-    private String nom;
-    private String email;
-    private  String telephone;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-    public  Client(){}
+/**
+ * Épisode 5 : Client devient une entité JPA.
+ * Une classe annotée @Entity = une table dans MySQL, un objet = une ligne.
+ */
+@Entity
+@Table(name = "clients")
+public class Client {
+
+    // Clé primaire, générée par MySQL (AUTO_INCREMENT)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String nom;
+
+    private String email;
+    private String telephone;
+
+    // Constructeur vide : obligatoire pour JPA (et pour Jackson)
+    public Client() {
+    }
 
     public Client(Long id, String nom, String email, String telephone) {
         this.id = id;
