@@ -1,61 +1,55 @@
 package com.isninfo.resafacile.service;
 
 import com.isninfo.resafacile.model.Client;
+import com.isninfo.resafacile.repository.ClientRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ClientService {
-    private  final List<Client> clients = new ArrayList<>();
-    private  final AtomicLong compteurId = new AtomicLong(1);
 
-    public  ClientService(){
-        clients.add(new Client(compteurId.getAndIncrement(),
-                "Araud Dupont",
-                "arnaud@email.com",
-                "2402543669"));
-        clients.add(new Client(compteurId.getAndIncrement(),
-                "Toto Daokou",
-                "toto@gmail.com",
-                "22822556699"));
+    private final ClientRepository clientRepository;
+
+    public ClientService(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
     }
+
     // afficher tous les clients
-    public  List<Client> trouverTousClient(){
-        return clients;
+    public List<Client> trouverTousClient() {
+        return clientRepository.findAll();
     }
 
     // trouver un client par son id
-    public Optional<Client> trouverParId(Long id){
-        return clients.stream()
-                .filter(ct ->ct.getId().equals(id))
-                .findFirst();
+    public Optional<Client> trouverParId(Long id) {
+        return clientRepository.findById(id);
     }
 
     // creer un client
-    public  Client creerClient(Client nouveau){
-        nouveau.setId(compteurId.getAndIncrement());
-        clients.add(nouveau);
-        return  nouveau;
+    public Client creerClient(Client nouveau) {
+        // id = null : MySQL génère l'id, et on évite d'écraser un client existant
+        nouveau.setId(null);
+        return clientRepository.save(nouveau);
     }
 
     // Modifier un client
-    public  Optional<Client> modifierClient(Long id, Client modifier){
-        return trouverParId(id).map( ct -> {
+    public Optional<Client> modifierClient(Long id, Client modifier) {
+        return clientRepository.findById(id)
+                .map(ct -> {
                     ct.setNom(modifier.getNom());
                     ct.setEmail(modifier.getEmail());
                     ct.setTelephone(modifier.getTelephone());
-                    return  ct;
+                    return clientRepository.save(ct);
                 });
     }
 
-
-    // suppresssion d'un client
-    public boolean supprimerClient(Long id){
-        return  clients.removeIf(ct -> ct.getId().equals(id));
+    // suppression d'un client
+    public boolean supprimerClient(Long id) {
+        if (clientRepository.existsById(id)) {
+            clientRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
-
 }
