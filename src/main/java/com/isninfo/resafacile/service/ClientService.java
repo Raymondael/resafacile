@@ -16,27 +16,40 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
-    // afficher tous les clients : lecture dans MySQL
+    // afficher tous les clients
     public List<Client> trouverTousClient() {
         return clientRepository.findAll();
     }
 
-    // trouver un client par son id : lecture dans MySQL
+    // trouver un client par son id
     public Optional<Client> trouverParId(Long id) {
         return clientRepository.findById(id);
     }
 
-    // Épisode 06 : la création, la modification et la suppression
-    // passeront aussi par le repository.
+    // creer un client
     public Client creerClient(Client nouveau) {
-        throw new UnsupportedOperationException("Écriture dans MySQL : épisode 06");
+        // id = null : MySQL génère l'id, et on évite d'écraser un client existant
+        nouveau.setId(null);
+        return clientRepository.save(nouveau);
     }
 
+    // Modifier un client
     public Optional<Client> modifierClient(Long id, Client modifier) {
-        throw new UnsupportedOperationException("Écriture dans MySQL : épisode 06");
+        return clientRepository.findById(id)
+                .map(ct -> {
+                    ct.setNom(modifier.getNom());
+                    ct.setEmail(modifier.getEmail());
+                    ct.setTelephone(modifier.getTelephone());
+                    return clientRepository.save(ct);
+                });
     }
 
+    // suppression d'un client
     public boolean supprimerClient(Long id) {
-        throw new UnsupportedOperationException("Écriture dans MySQL : épisode 06");
+        if (clientRepository.existsById(id)) {
+            clientRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
