@@ -1,0 +1,29 @@
+meta {
+  name: POST creer un client (id genere par MySQL)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/clients
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "nom": "Daniel Ondo",
+    "email": "daniel@example.com",
+    "telephone": "+240 222 000 004"
+  }
+}
+
+docs {
+  Pas d'id dans le corps : MySQL le genere (AUTO_INCREMENT).
+  La reponse 201 contient le client avec son nouvel id.
+  Verifie la ligne dans MySQL Workbench : SELECT * FROM clients;
+}

@@ -1,0 +1,16 @@
+meta {
+  name: GET tous les clients (lus dans MySQL)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/clients
+  body: none
+  auth: none
+}
+
+docs {
+  Depuis l'episode 05, la liste vient de la table "clients" dans MySQL.
+  Redemarre l'application puis relance cette requete : les clients sont toujours la.
+}
