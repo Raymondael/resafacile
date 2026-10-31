@@ -26,6 +26,10 @@ public class Client {
     private String email;
     private String telephone;
 
+    // Épisode 7 : champ INTERNE, réservé à l'équipe. Il est dans la table,
+    // mais il ne doit jamais sortir par l'API : c'est le rôle des DTO.
+    private String noteInterne;
+
     // Constructeur vide : obligatoire pour JPA (et pour Jackson)
     public Client() {
     }
@@ -67,5 +71,13 @@ public class Client {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public String getNoteInterne() {
+        return noteInterne;
+    }
+
+    public void setNoteInterne(String noteInterne) {
+        this.noteInterne = noteInterne;
     }
 }

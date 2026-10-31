@@ -1,0 +1,31 @@
+meta {
+  name: POST creer avec id et noteInterne dans le corps
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/clients
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "id": 999,
+    "nom": "Alice Essono",
+    "email": "alice@example.com",
+    "telephone": "+240 222 000 005",
+    "noteInterne": "Je m'invite dans la base"
+  }
+}
+
+docs {
+  Les champs id et noteInterne ne font pas partie de ClientRequest : ils ne sont pas copies dans l'entite.
+  Resultat attendu : 201, avec un id genere par MySQL (pas 999) et aucune note interne.
+  Comportement a confirmer a la repetition : un champ inconnu dans le JSON doit etre ignore, pas refuse.
+}

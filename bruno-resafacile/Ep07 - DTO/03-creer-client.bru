@@ -1,0 +1,28 @@
+meta {
+  name: POST creer un client (ClientRequest)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/clients
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "nom": "Daniel Ondo",
+    "email": "daniel@example.com",
+    "telephone": "+240 222 000 004"
+  }
+}
+
+docs {
+  Le corps correspond exactement au DTO ClientRequest : nom, email, telephone.
+  La reponse 201 est un ClientResponse avec l'id genere par MySQL.
+}

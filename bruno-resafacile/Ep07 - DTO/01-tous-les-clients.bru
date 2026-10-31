@@ -1,0 +1,16 @@
+meta {
+  name: GET tous les clients (ClientResponse)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/clients
+  body: none
+  auth: none
+}
+
+docs {
+  Avant le DTO : le JSON laisse sortir le champ noteInterne de l'entite.
+  Apres le DTO : seuls id, nom, email et telephone sortent. La note reste dans MySQL.
+}

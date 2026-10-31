@@ -1,0 +1,15 @@
+meta {
+  name: GET rechercher par nom
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/clients/recherche?nom=dupont
+  body: none
+  auth: none
+}
+
+params:query {
+  nom: dupont
+}

@@ -1,0 +1,27 @@
+meta {
+  name: PUT modifier un client
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/api/clients/1
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "nom": "Arnaud Dupont",
+    "email": "arnaud.dupont@example.com",
+    "telephone": "2402543669"
+  }
+}
+
+docs {
+  La note interne du client 1 n'est pas touchee : verifie dans Workbench (SELECT id, nom, note_interne FROM clients).
+}

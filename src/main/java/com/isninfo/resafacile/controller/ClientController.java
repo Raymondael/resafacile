@@ -42,6 +42,9 @@
 
 package com.isninfo.resafacile.controller;
 
+import com.isninfo.resafacile.dto.ClientRequest;
+import com.isninfo.resafacile.dto.ClientResponse;
+import com.isninfo.resafacile.mapper.ClientMapper;
 import com.isninfo.resafacile.model.Client;
 import com.isninfo.resafacile.service.ClientService;
 import org.springframework.http.HttpStatus;
@@ -62,21 +65,26 @@ public class ClientController {
 
     // Afficher tous les clients
     @GetMapping
-    public List<Client> tousClient() {
-        return clientService.trouverTousClient();
+    public List<ClientResponse> tousClient() {
+        return clientService.trouverTousClient().stream()
+                .map(ClientMapper::toResponse)
+                .toList();
     }
 
     // Épisode 6 : rechercher par nom, GET /api/clients/recherche?nom=dupont
     // (l'adresse littérale "recherche" passe avant le "/{id}" : Spring choisit la plus précise)
     @GetMapping("/recherche")
-    public List<Client> rechercher(@RequestParam String nom) {
-        return clientService.rechercherParNom(nom);
+    public List<ClientResponse> rechercher(@RequestParam String nom) {
+        return clientService.rechercherParNom(nom).stream()
+                .map(ClientMapper::toResponse)
+                .toList();
     }
 
     // Afficher un client par son id
     @GetMapping("/{id}")
-    public ResponseEntity<Client> afficherUnClient(@PathVariable Long id) {
+    public ResponseEntity<ClientResponse> afficherUnClient(@PathVariable Long id) {
         return clientService.trouverParId(id)
+                .map(ClientMapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -84,16 +92,17 @@ public class ClientController {
 
     // Création d'un client
     @PostMapping
-    public ResponseEntity<Client> creer(@RequestBody Client nouveau) {
-        Client cree = clientService.creerClient(nouveau);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cree);
+    public ResponseEntity<ClientResponse> creer(@RequestBody ClientRequest requete) {
+        Client cree = clientService.creerClient(ClientMapper.toEntity(requete));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ClientMapper.toResponse(cree));
     }
 
     // Update un client
     @PutMapping("/{id}")
-    public ResponseEntity<Client> modifierClient(@PathVariable Long id,
-                                                 @RequestBody Client modif) {
-        return clientService.modifierClient(id, modif)
+    public ResponseEntity<ClientResponse> modifierClient(@PathVariable Long id,
+                                                         @RequestBody ClientRequest requete) {
+        return clientService.modifierClient(id, ClientMapper.toEntity(requete))
+                .map(ClientMapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
