@@ -23,7 +23,10 @@ public class Client {
     @Column(nullable = false)
     private String nom;
 
+    // Épisode 8 : un email = un client (contrainte UNIQUE dans MySQL)
+    @Column(unique = true)
     private String email;
+
     private String telephone;
 
     // Épisode 7 : champ INTERNE, réservé à l'équipe. Il est dans la table,

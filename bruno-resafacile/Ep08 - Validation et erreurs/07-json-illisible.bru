@@ -1,0 +1,23 @@
+meta {
+  name: POST creer avec un JSON casse (400)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/clients
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  { "nom": "Marie
+}
+
+docs {
+  Le JSON est incomplet : 400 avec le message Le corps de la requete n'est pas un JSON valide.
+}

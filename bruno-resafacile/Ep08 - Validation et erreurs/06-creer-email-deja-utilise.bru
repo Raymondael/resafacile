@@ -1,0 +1,27 @@
+meta {
+  name: POST creer avec un email deja utilise (409)
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/clients
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "nom": "Autre Arnaud",
+    "email": "arnaud@email.com",
+    "telephone": "+240 222 000 006"
+  }
+}
+
+docs {
+  Apres la remise a zero, arnaud@email.com existe deja (client 1) : la contrainte UNIQUE de MySQL refuse. Reponse 409.
+}

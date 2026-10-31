@@ -1,0 +1,26 @@
+meta {
+  name: POST creer avec un email invalide (400)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/clients
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "nom": "Marie Nguema",
+    "email": "pas-un-email"
+  }
+}
+
+docs {
+  details.email = L'email n'est pas valide.
+}

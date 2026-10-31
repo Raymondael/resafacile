@@ -44,9 +44,11 @@ package com.isninfo.resafacile.controller;
 
 import com.isninfo.resafacile.dto.ClientRequest;
 import com.isninfo.resafacile.dto.ClientResponse;
+import com.isninfo.resafacile.exception.ClientIntrouvableException;
 import com.isninfo.resafacile.mapper.ClientMapper;
 import com.isninfo.resafacile.model.Client;
 import com.isninfo.resafacile.service.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -82,29 +84,27 @@ public class ClientController {
 
     // Afficher un client par son id
     @GetMapping("/{id}")
-    public ResponseEntity<ClientResponse> afficherUnClient(@PathVariable Long id) {
+    public ClientResponse afficherUnClient(@PathVariable Long id) {
         return clientService.trouverParId(id)
                 .map(ClientMapper::toResponse)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ClientIntrouvableException(id));
     }
 
 
     // Création d'un client
     @PostMapping
-    public ResponseEntity<ClientResponse> creer(@RequestBody ClientRequest requete) {
+    public ResponseEntity<ClientResponse> creer(@Valid @RequestBody ClientRequest requete) {
         Client cree = clientService.creerClient(ClientMapper.toEntity(requete));
         return ResponseEntity.status(HttpStatus.CREATED).body(ClientMapper.toResponse(cree));
     }
 
     // Update un client
     @PutMapping("/{id}")
-    public ResponseEntity<ClientResponse> modifierClient(@PathVariable Long id,
-                                                         @RequestBody ClientRequest requete) {
+    public ClientResponse modifierClient(@PathVariable Long id,
+                                         @Valid @RequestBody ClientRequest requete) {
         return clientService.modifierClient(id, ClientMapper.toEntity(requete))
                 .map(ClientMapper::toResponse)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ClientIntrouvableException(id));
     }
 
 // Supprimer un client
@@ -113,9 +113,9 @@ public class ClientController {
     public ResponseEntity<Void> supprimer(
             @PathVariable Long id) {
 
-        if (clientService.supprimerClient(id)) {
-            return ResponseEntity.noContent().build();
+        if (!clientService.supprimerClient(id)) {
+            throw new ClientIntrouvableException(id);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 }

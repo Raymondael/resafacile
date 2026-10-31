@@ -1,0 +1,26 @@
+meta {
+  name: PUT modifier avec un nom vide (400)
+  type: http
+  seq: 9
+}
+
+put {
+  url: {{baseUrl}}/api/clients/1
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "nom": "   ",
+    "email": "arnaud@email.com"
+  }
+}
+
+docs {
+  @NotBlank refuse aussi un nom fait uniquement d'espaces. La validation s'applique au PUT comme au POST.
+}

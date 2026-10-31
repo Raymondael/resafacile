@@ -1,0 +1,27 @@
+meta {
+  name: POST creer avec un telephone invalide (400)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/clients
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "nom": "Marie Nguema",
+    "email": "marie@example.com",
+    "telephone": "abc"
+  }
+}
+
+docs {
+  details.telephone : 6 a 20 chiffres, espaces ou +.
+}

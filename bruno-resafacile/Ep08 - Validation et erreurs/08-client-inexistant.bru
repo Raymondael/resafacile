@@ -1,0 +1,15 @@
+meta {
+  name: GET client inexistant (404 en JSON)
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/clients/999
+  body: none
+  auth: none
+}
+
+docs {
+  404, mais cette fois avec un corps JSON : statut, message, chemin.
+}

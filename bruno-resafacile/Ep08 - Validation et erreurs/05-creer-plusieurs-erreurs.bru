@@ -1,0 +1,27 @@
+meta {
+  name: POST creer avec plusieurs erreurs (400)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/clients
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "nom": "",
+    "email": "pas-un-email",
+    "telephone": "abc"
+  }
+}
+
+docs {
+  Les trois champs invalides sont listes d'un coup dans details.
+}

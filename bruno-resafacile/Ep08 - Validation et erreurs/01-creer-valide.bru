@@ -1,0 +1,27 @@
+meta {
+  name: POST creer un client valide (201)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/clients
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "nom": "Daniel Ondo",
+    "email": "daniel@example.com",
+    "telephone": "+240 222 000 004"
+  }
+}
+
+docs {
+  Reponse 201 : le client avec son id. Rejouer la requete donne 409 : l'email est maintenant utilise.
+}
